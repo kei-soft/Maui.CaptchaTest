@@ -9,30 +9,35 @@ namespace Maui.CaptchaTest.Platforms.Android.ReCaptcha
 {
     public class ReCaptchaService : IReCaptchaService
     {
-        readonly HttpClient _httpClient = new HttpClient();
+        readonly HttpClient httpClient = new HttpClient();
         private static Context CurrentContext => Platform.CurrentActivity;
 
-        private SafetyNetClient _safetyNetClient;
+        private SafetyNetClient safetyNetClient;
+
         private SafetyNetClient SafetyNetClient
         {
             get
             {
-                return _safetyNetClient ??= SafetyNetClass.GetClient(CurrentContext);
+                return safetyNetClient ??= SafetyNetClass.GetClient(CurrentContext);
             }
         }
 
         public async Task<string> Verify(string siteKey, string domainUrl = "https://localhost")
         {
-            SafetyNetApiRecaptchaTokenResponse response = await SafetyNetClass.GetClient(Platform.CurrentActivity).VerifyWithRecaptchaAsync(siteKey);
+            var client = SafetyNetClass.GetClient(Platform.CurrentActivity);
+
+            SafetyNetApiRecaptchaTokenResponse response = await client.VerifyWithRecaptchaAsync(siteKey);
+
             return response?.TokenResult;
         }
 
         public async Task<bool> Validate(string captchaToken)
         {
             var validationUrl = string.Format(Constants.ReCaptchaVerificationUrl, Constants.ReCaptchaSiteSecretKey, captchaToken);
-            var response = await _httpClient.GetStringAsync(validationUrl);
+            var response = await httpClient.GetStringAsync(validationUrl);
             var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(response);
-            return reCaptchaResponse.Success;
+
+            return reCaptchaResponse.success;
         }
     }
 }

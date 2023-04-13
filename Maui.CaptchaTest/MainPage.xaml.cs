@@ -18,11 +18,17 @@ public partial class MainPage : ContentPage
         var captchaToken = await reCaptchaService.Verify(Constants.ReCaptchaSiteKey);
 
         if (captchaToken == null)
+        {
             throw new Exception("Unable to retrieve reCaptcha Token");
+        }
 
         bool isValidCaptchaToken = await reCaptchaService.Validate(captchaToken);
+
         if (!isValidCaptchaToken)
+        {
             throw new Exception("reCaptcha token validation failed.");
+
+        }
 
         //#if ANDROID
         //        var api = Android.Gms.SafetyNet.SafetyNetClass.GetClient(Platform.CurrentActivity);
