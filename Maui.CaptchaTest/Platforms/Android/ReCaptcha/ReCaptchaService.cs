@@ -35,9 +35,9 @@ namespace Maui.CaptchaTest.Platforms.Android.ReCaptcha
         {
             var validationUrl = string.Format(Constants.ReCaptchaVerificationUrl, Constants.ReCaptchaSiteSecretKey, captchaToken);
             var response = await httpClient.GetStringAsync(validationUrl);
-            var reCaptchaResponse = JsonConvert.DeserializeObject<ReCaptchaResponse>(response);
+            var captchaResult = JsonConvert.DeserializeObject<CaptchaResult>(response);
 
-            return reCaptchaResponse.success;
+            return captchaResult.Success;
         }
     }
 }

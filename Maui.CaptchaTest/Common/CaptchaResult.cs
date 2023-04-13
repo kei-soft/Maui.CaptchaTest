@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Maui.CaptchaTest
+namespace Maui.CaptchaTest.Common
 {
     public class CaptchaResult
     {

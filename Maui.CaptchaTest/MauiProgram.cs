@@ -24,14 +24,11 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-
-
 #if ANDROID
 	    builder.Services.AddScoped<IReCaptchaService, Maui.CaptchaTest.Platforms.Android.ReCaptcha.ReCaptchaService>();
 #elif IOS
         builder.Services.AddScoped<IReCaptchaService, Maui.CaptchaTest.Platforms.iOS.ReCaptcha.ReCaptchaService>();
 #endif
-
 
         return builder.Build();
     }
